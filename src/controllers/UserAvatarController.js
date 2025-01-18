@@ -1,5 +1,6 @@
 const AppError = require('../utils/AppError');
 const knex = require('../database/knex');
+// dependencies
 const DiskStorage = require('../providers/DiskStorage');
 class UserAvatarController {
     async update (request, response) {
