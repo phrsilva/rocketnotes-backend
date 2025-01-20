@@ -2,11 +2,17 @@ const database = require('../database/sqlite/index');
 const { hash, compare } = require('bcryptjs');
 const AppError = require('../utils/AppError');
 
+const UserRepository = require('../repositories/UserRepository');
+const { use } = require('express/lib/router');
+
 class UsersController{
+
     async create(request, response){
+        const userRepository = new UserRepository();
+
         const { name, email, password } = request.body;
         const db = await database();
-        const checkIfUserExists = await db.get('SELECT * FROM users WHERE email = (?)', [email]);
+        const checkIfUserExists = await userRepository.findByEmail(email);
 
         if(checkIfUserExists){
             throw new AppError('E-mail já cadastrado', 400);
@@ -14,8 +20,9 @@ class UsersController{
 
         const passwordHash = await hash(password, 8);
 
+        await userRepository.create({ name, email, password: passwordHash });
 
-        await db.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, passwordHash]);
+
 
         return response.json({ name, email, passwordHash });
  
