@@ -3,28 +3,20 @@ const { hash, compare } = require('bcryptjs');
 const AppError = require('../utils/AppError');
 
 const UserRepository = require('../repositories/UserRepository');
-const { use } = require('express/lib/router');
+const UserCreateService = require('../service/UserCreateService');
+
 
 class UsersController{
 
     async create(request, response){
-        const userRepository = new UserRepository();
-
         const { name, email, password } = request.body;
-        const db = await database();
-        const checkIfUserExists = await userRepository.findByEmail(email);
+        
+       const userRepository = new UserRepository();
+       const userCreateService = new UserCreateService(userRepository);
 
-        if(checkIfUserExists){
-            throw new AppError('E-mail já cadastrado', 400);
-        }
+       await userCreateService.execute({name, email, password});
 
-        const passwordHash = await hash(password, 8);
-
-        await userRepository.create({ name, email, password: passwordHash });
-
-
-
-        return response.json({ name, email, passwordHash });
+        return response.json(`Usário ${name} criado com sucesso!`);
  
     }
 
