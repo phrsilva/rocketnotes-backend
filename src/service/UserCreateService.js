@@ -13,7 +13,7 @@ class UserCreateService {
         const checkIfUserExists = await this.userRepository.findByEmail(email);
 
         if(checkIfUserExists){
-            throw new AppError('E-mail já cadastrado', 400);
+            throw new AppError('E-mail já cadastrado');
         }
 
         const passwordHash = await hash(password, 8);
