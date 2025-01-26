@@ -38,7 +38,7 @@ describe("UserCreateService", () => {
 
         
     
-        await expect(userCreateService.execute(user2)).rejects.toEqual(new AppError('E-mail ja cadastrado'));
+        await expect(userCreateService.execute(user2)).rejects.toEqual(new AppError('E-mail já cadastrado'));
     })
 })
 

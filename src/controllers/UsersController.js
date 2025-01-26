@@ -42,7 +42,7 @@ class UsersController{
 
         // verifica se o e-mail informado já existe
         if(userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id){
-            throw new AppError('E-mail ja cadastrado', 400);
+            throw new AppError('E-mail já cadastrado', 400);
         }
 
         // verifica se foi informada uma nova senha, sem que tenha sido informada a senha atual
